@@ -4,9 +4,9 @@ if (NOT TARGET fmt)
   target_compile_definitions(fmt INTERFACE FMT_HEADER_ONLY)
 endif()
 
-if (NOT TARGET aw)
-  add_library(aw INTERFACE)
-  target_include_directories(aw INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/aw)
+if (NOT TARGET atomic_wait)
+  add_library(atomic_wait INTERFACE)
+  target_include_directories(atomic_wait INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/atomic_wait)
 endif()
 
 if (NOT TARGET any_invocable)

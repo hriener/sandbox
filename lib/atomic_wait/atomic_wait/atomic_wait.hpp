@@ -892,8 +892,6 @@ THE SOFTWARE.
 
 */
 
-#include "atomic_wait"
-
 namespace std {
 
 class latch {
