@@ -1,4 +1,5 @@
 #include <aw/aw.hpp>
+#include <any_invocable/any_invocable.hpp>
 #include <queue>
 #include <mutex>
 #include <concepts>
@@ -158,7 +159,7 @@ private:
   }
 
 private:
-  concurrent_bounded_queue<std::function<void()>, QueueDepth> tasks;
+  concurrent_bounded_queue<ofats::any_invocable<void()>, QueueDepth> tasks;
   thread_group threads;
 };
 

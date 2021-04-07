@@ -8,3 +8,8 @@ if (NOT TARGET aw)
   add_library(aw INTERFACE)
   target_include_directories(aw INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/aw)
 endif()
+
+if (NOT TARGET any_invocable)
+  add_library(any_invocable INTERFACE)
+  target_include_directories(any_invocable INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/any_invocable)
+endif()
