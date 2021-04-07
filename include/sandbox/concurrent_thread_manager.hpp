@@ -10,6 +10,55 @@
 namespace sandbox
 {
 
+struct spin_mutex
+{
+public:
+  void lock()
+  {
+    while ( flag.exchange( true, std::memory_order_acquire ) )
+    {
+      std::atomic_wait_explicit( &flag, true, std::memory_order_relaxed );
+    }
+  }
+
+  void unlock()
+  {
+    flag.store( false, std::memory_order_release );
+    std::atomic_notify_one( &flag );
+  }
+  
+private:
+  std::atomic<bool> flag = ATOMIC_VAR_INIT( false );
+}; /* spin_mutex */
+
+struct ticket_mutex
+{
+public:
+  void lock()
+  {
+    auto const my = in.fetch_add( 1, std::memory_order_acquire );
+    while ( true )
+    {
+      auto const now = out.load( std::memory_order_acquire );
+      if ( now == my )
+      {
+        return;
+      }
+      std::atomic_wait_explicit( &out, now, std::memory_order_relaxed );
+    }
+  }
+
+  void unlock()
+  {
+    out.fetch_add( 1, std::memory_order_release );
+    std::atomic_notify_all( &out );
+  }
+
+private:
+  std::atomic<int> in = ATOMIC_VAR_INIT( 0 );
+  std::atomic<int> out = ATOMIC_VAR_INIT( 0 );
+}; /* ticket_mutex */
+
 struct thread_group
 {
 public:
@@ -99,7 +148,7 @@ private:
 
 private:
   std::queue<T> items;
-  std::mutex items_mutex;
+  ticket_mutex items_mutex;
   std::counting_semaphore<QueueDepth> items_produced{0};
   std::counting_semaphore<QueueDepth> remaining_space{QueueDepth};
 }; /* concurrent_bounded_queue */
@@ -131,11 +180,6 @@ public:
     }
   }
 
-  // void submit( std::invocable auto&& f )
-  // {
-  //   tasks.enqueue( std::forward<decltype( f )>( f ) );
-  // }
-  
   void make_progress()
   {
     if ( auto f = tasks.try_dequeue() )
