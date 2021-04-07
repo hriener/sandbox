@@ -1,4 +1,4 @@
-file(GLOB FILENAMES *.cpp)
+file(GLOB_RECURSE FILENAMES *.cpp)
 
 foreach(filename ${FILENAMES})
   get_filename_component(basename ${filename} NAME_WE)
