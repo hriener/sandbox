@@ -19,6 +19,11 @@ if (NOT TARGET mockturtle)
   target_include_directories(mockturtle INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/mockturtle)
 endif()
 
+if (NOT TARGET lorina)
+  add_library(lorina INTERFACE)
+  target_include_directories(lorina INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/lorina)
+endif()
+
 if (NOT TARGET parallel_hashmap)
   add_library(parallel_hashmap INTERFACE) # 2020.11
   target_include_directories(parallel_hashmap SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/parallel_hashmap)
