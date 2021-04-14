@@ -202,6 +202,11 @@ public:
     return {index, 0};
   }
 
+  signal create_not( signal a )
+  {
+    return !a;
+  }
+
   signal create_and( signal a, signal b )
   {
     /* order inputs */
@@ -259,7 +264,10 @@ public:
   void foreach_node( Fn&& fn ) const
   {
     auto r = mockturtle::detail::range<uint32_t>( storage_.nodes.size() );
-    mockturtle::detail::foreach_element( r.begin(), r.end(), fn );
+    for ( auto it = r.begin(); it != r.end(); ++it )
+    {
+      fn( aig::node( *it ) );
+    }
   }
 
   template<typename Fn>
