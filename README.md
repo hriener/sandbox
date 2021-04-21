@@ -1,6 +1,6 @@
 # sandbox
 
-Some C++20 examples from the talk ``The C++20 Synchronization Library'' at [Meeting C++ 2019](https://meetingcpp.com/) by Bryce Adelstein Lelbach .
+Some C++20 examples from the talk ``The C++20 Synchronization Library'' at [Meeting C++ 2019](https://meetingcpp.com/) by Bryce Adelstein Lelbach.
 
 A recent compiler is necessary. The code compiles on macOS Big Sur with GCC 10.
 
